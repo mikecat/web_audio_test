@@ -39,8 +39,13 @@ class InputProcessor extends AudioWorkletProcessor {
 		ptr--;
 		if (ptr < 0) ptr = this.logData.length - 1;
 		// update blocks with updated data
-		const startBlock = Math.floor(this.logStartPos / this.logBlockData.length);
-		const endBlock = Math.floor(ptr / this.logBlockData.length);
+		let startBlock = Math.floor(this.logStartPos / this.logBlockData.length);
+		let endBlock = Math.floor(ptr / this.logBlockData.length);
+		if (input.length >= this.logData.length || (startBlock == endBlock && ptr < this.logStartPos)) {
+			// all blocks should be updated
+			startBlock = 0;
+			endBlock = this.logBlockData.length - 1;
+		}
 		this.logStartPos = newLogStartPos;
 		for (let i = startBlock; ; ) {
 			const offset = this.logBlockData.length * i;
