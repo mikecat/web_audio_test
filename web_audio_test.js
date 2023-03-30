@@ -11,6 +11,7 @@ window.addEventListener("DOMContentLoaded", function() {
 	const minArea = document.getElementById("min-area");
 	const maxArea = document.getElementById("max-area");
 	const avgArea = document.getElementById("avg-area");
+	const freqArea = document.getElementById("freq-area");
 
 	let audioContext = null;
 	let outputGenerator = null;
@@ -58,11 +59,17 @@ window.addEventListener("DOMContentLoaded", function() {
 			inputProcessor.channelCountMode = "explicit";
 			inputProcessor.channelCount = 1;
 			inputProcessor.port.onmessage = function(e) {
-				const data = e.data;
-				minArea.textContent = data.min;
-				maxArea.textContent = data.max;
-				avgArea.textContent = data.avg;
-				amplitudeMeter.value = Math.max(data.max - data.avg, data.avg - data.min);
+				const stat = e.data.stat, periods = e.data.periods;
+				minArea.textContent = stat.min;
+				maxArea.textContent = stat.max;
+				avgArea.textContent = stat.avg;
+				amplitudeMeter.value = Math.max(stat.max - stat.avg, stat.avg - stat.min);
+				if (periods.length > 0) {
+					let periodAvg = 0;
+					for (let i = 0; i < periods.length; i++) periodAvg += periods[i];
+					periodAvg /= periods.length;
+					freqArea.textContent = 1 / periodAvg;
+				}
 			}
 			sourceNode.connect(inputProcessor);
 		}
