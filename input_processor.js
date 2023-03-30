@@ -3,7 +3,7 @@
 class InputProcessor extends AudioWorkletProcessor {
 	constructor(...args) {
 		super(...args);
-		const processTime = 0.1; // s
+		const processTime = 0.1; // [s]
 		const logSizeRaw = sampleRate * processTime;
 		const logBlockSize = Math.round(Math.sqrt(logSizeRaw));
 		const logSize = logBlockSize * logBlockSize;
@@ -59,7 +59,7 @@ class InputProcessor extends AudioWorkletProcessor {
 			const resultData = {"max": this.logBlockData[0].max, "min": this.logBlockData[0].min, "avg": 0};
 			for (let i = 0; i < this.logBlockData.length; i++) {
 				if (resultData.max < this.logBlockData[i].max) resultData.max = this.logBlockData[i].max;
-				if (resultData.min > this.logBlockData[i].min) resultData.max = this.logBlockData[i].min;
+				if (resultData.min > this.logBlockData[i].min) resultData.min = this.logBlockData[i].min;
 				resultData.avg += this.logBlockData[i].avg;
 			}
 			resultData.avg /= this.logBlockData.length;
