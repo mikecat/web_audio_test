@@ -14,6 +14,8 @@ window.addEventListener("DOMContentLoaded", function() {
 		if (outputGenerator === null) {
 			await audioContext.audioWorklet.addModule("output_generator.js");
 			outputGenerator = new AudioWorkletNode(audioContext, "output-generator");
+			outputGenerator.channelCountMode = "explicit";
+			outputGenerator.channelCount = 1;
 			outputGenerator.connect(audioContext.destination);
 		}
 		playButton.disabled = true;
