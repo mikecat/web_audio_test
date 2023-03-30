@@ -92,6 +92,8 @@ class InputProcessor extends AudioWorkletProcessor {
 			this.port.postMessage({"stat": allData, "periods": this.upIntervals});
 			this.upIntervals = [];
 		}
+		// continue processing
+		return true;
 	}
 }
 
